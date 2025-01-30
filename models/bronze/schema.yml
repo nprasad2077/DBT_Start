@@ -1,0 +1,46 @@
+version: 2
+
+models:
+
+  - name: bz_agent
+    columns:
+      - name: agent_user_name
+        description: Agent Username
+    tests:
+      - not_empty
+  - name: bz_drug_list
+    tests:
+      - not_empty
+  - name: bz_drug_plan_benefit
+    tests:
+      - not_empty
+  - name: bz_formulary_drug
+    tests:
+      - not_empty
+  - name: bz_medicare_plan_premium
+    tests:
+      - not_empty
+  - name: bz_member_drug
+    tests:
+      - not_empty
+  - name: bz_member_pharmacy
+    tests:
+      - not_empty
+  - name: bz_member_profile
+    tests:
+      - not_empty
+  - name: bz_member_provider
+    tests:
+      - not_empty
+  - name: bz_plan_landscape
+    tests:
+      - not_empty
+  - name: bz_star_rating_domain_stars
+    tests:
+      - not_empty
+  - name: bz_star_rating_summary_rating
+    tests:
+      - not_empty
+  - name: bz_us_country_mapping
+    tests:
+      - not_empty

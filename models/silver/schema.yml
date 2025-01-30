@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: sv_formulary_drug
+    tests:
+      - not_empty
+  - name: sv_member_drug
+    tests:
+      - not_empty
+  - name: sv_member_plan
+    tests:
+      - not_empty
+  - name: sv_plan
+    tests:
+      - not_empty
