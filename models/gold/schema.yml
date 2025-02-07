@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: gd_member_drug_impact
+    tests:
+      - not_empty

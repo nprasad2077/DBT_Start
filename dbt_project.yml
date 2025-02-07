@@ -1,0 +1,44 @@
+name: 'cnx_myc_logic_engine'
+version: '1.0.0'
+config-version: 2
+
+profile: 'connecture'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  run_started_at: null
+  emitted_at: null
+
+models:
+  cnx_myc_logic_engine:
+    +materialized: table
+    +table_type: iceberg
+    bronze:
+      +schema: bronze
+      +tags: bronze
+      landscape:
+        +enabled: false
+      plan_crosswalk:
+        +enabled: false
+    silver:
+      +schema: silver
+      +tags: silver
+      landscape_crosswalk:
+        +enabled: false
+      landscape_crosswalk_drug:
+        +enabled: false
+    gold:
+      +schema: gold
+      +tags: gold
+      plan_landscape:
+        +enabled: false

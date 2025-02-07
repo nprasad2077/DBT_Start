@@ -1,0 +1,95 @@
+version: 2
+
+sources:
+  - name: landing
+    database: "{{ env_var('LANDING_DATABASE') }}"
+    schema: landing
+    tables:
+      - name: agent
+        columns:
+          - name: agentusername
+            tests:
+              - dbt_utils.not_empty_string
+      - name: cno_whitelist
+      - name: drug_list
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(ndc as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(drug_dsg_id as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(unit_cost as DECIMAL(12,2)) IS NOT NULL"
+        columns:
+          - name: hastherapeuticalternative
+            tests:
+                - accepted_values:
+                    values: ['Yes', 'No']
+          - name: drugtype
+            tests:
+                - accepted_values:
+                    values: ['Brand', 'BRAND', 'brand', 'Generic', 'GENERIC', 'generic']
+      - name: drug_plan_benefit
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(cost_amount as DECIMAL(12,2)) IS NOT NULL"
+        columns:
+          - name: formulary_id
+            tests:
+              - dbt_utils.not_empty_string
+          - name: plan_id
+            tests:
+              - dbt_utils.not_empty_string
+          - name: cost_type_label
+            tests:
+                - accepted_values:
+                    values: ['Copay', 'COPAY', 'copay', 'Coinsurance', 'COINSURANCE', 'coinsurance']
+      - name: formulary_drug
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(formulary_id as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(drug_dsg_id as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(planyear as INTEGER) IS NOT NULL"
+      - name: medicare_plan_premium
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(carrierid as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(formulary_id as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(plan_id as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(planyear as INTEGER) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(planpremium as DECIMAL(12,2)) IS NOT NULL"
+      - name: member_drug
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(cnxmemberid as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(daysofsupply as INTEGER) BETWEEN 0 AND 365"
+      - name: member_pharmacy
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(cnxmemberid as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(pharmacynabp as INTEGER) IS NOT NULL"
+      - name: member_profile
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(cnxmemberid as BIGINT) IS NOT NULL"
+        columns:
+          - name: customerid
+            tests:
+              - dbt_utils.not_empty_string
+      - name: member_provider
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(cnxmemberid as BIGINT) IS NOT NULL"
+            - dbt_utils.expression_is_true:
+                expression: "try_cast(externalnpi as BIGINT) IS NOT NULL"
+      - name: plan_landscape
+      - name: star_rating_domain_stars
+      - name: star_rating_summary_rating
+      - name: us_country_mapping
